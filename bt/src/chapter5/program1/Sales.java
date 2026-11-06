@@ -2,8 +2,8 @@ package chapter5.program1;
 
 public class Sales extends Employee {
 
-	public Sales(String name, String department) {
-		super(name, department);
+	public Sales(String name) {
+		super(name, "営業");
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 

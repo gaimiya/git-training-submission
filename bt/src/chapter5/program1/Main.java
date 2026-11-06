@@ -1,18 +1,16 @@
 package chapter5.program1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Main {
 	public static void main(String[] args) {
-		ArrayList<String> a = new ArrayList<>(Arrays.asList("あ", "い", "う"));
-		Engineer e = new Engineer("ミヤガイ", "エンジニア", a);
-		e.disclosure();
-		
-//		BT bt = new BT();
-//		HumanResource hr = new HumanResource("佐藤", "人事");
-//		bt.createEmp(hr);
-//		bt.allEmployee();
-		
+		BT.createEmp(1);
+		BT.createEmp(1);
+		HumanResource hr = new HumanResource("ダミー");
+		hr = (HumanResource)BT.empList.get(0);
+		hr.interview();
+		Sales sl = new Sales("ダミー");
+		sl = (Sales)BT.empList.get(1);
+		sl.weeklyReport();
+		sl.meeting();
+		BT.allEmployee();
 	}
 }
