@@ -4,8 +4,7 @@ public class Circle extends Shape {
 	private int radius;
 	
 	public Circle() {
-		Point center = new Point();
-		this.center = center;
+		this.center = new Point();
 	}
 	public Circle(int x, int y, int r) {
 		Point center = new Point(x, y); 
@@ -21,7 +20,10 @@ public class Circle extends Shape {
 	}
 	
 	public void draw() {
-		System.out.println("\"[円を描画]中心点(" + center.getX() + ", " + \")";
+		System.out.println("\"[円を描画]中心点(" + center.getX() + ", " + center.getY() + ")"
+				+ "から半径" + getRadius() + "\"");
 	}
-	
+	public double getPerimeter() {
+		return getRadius() * 2 * Math.PI;
+	}
 }

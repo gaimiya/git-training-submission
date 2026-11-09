@@ -11,8 +11,9 @@ public class Rectangle extends Polygon {
 		this.angle = 4;
 	}
 	
-	public void draw() { // 次のようなメッセージを表示する→[長方形(短型)を描画]点(0,0)を基準として幅100、高さ50の正方形
-		
+	public void draw() {
+		System.out.println("\"[長方形(矩形)を描画]点(" + p.getX() + ", " + p.getY() + ")を基準として幅" + 
+				width + "、高さ" + height + "の長方形\"");
 	}
 	public double getPerimeter() {
 		return (this.width + this.height) * 2; 
