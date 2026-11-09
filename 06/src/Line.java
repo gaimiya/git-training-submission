@@ -1,7 +1,7 @@
 
 public class Line implements Figure {
-	private Point p1 = new Point(); // 線の始点を表すPoint型privateフィールド
-	private Point p2 = new Point(); // 線の"終点"を表すPoint型privateフィールド
+	private Point p1 = new Point(); // 線の始点を表す
+	private Point p2 = new Point(); // 線の"終点"を表す
 	
 	public Line() {
 		this.p1.setX(0);
@@ -16,16 +16,11 @@ public class Line implements Figure {
 		p2.setY(p2y);
 	}
 	
-	public void draw() { // [線を描画]始点(0,0)から終点(100,100)まで
-		int endPoint = p2.getX();
-		StringBuilder sb = new StringBuilder();
-		for(int i = 1; i < endPoint; i++) {
-			sb.append(" ");
-		}
-		sb.append("*");
-		System.out.println(sb);
-		
+	public void draw() {		
+		System.out.println("\"[線を描画]始点(" + p1.getX() + "," +  p1.getY() + ")"
+				+ "から終点(" + p2.getX() + "," +  p2.getY() + ")まで\"");
 	}
+	
 	public double getPerimeter() {
 		return Math.sqrt(Math.pow(p2.getY() - p1.getX(), 2)
 					+ Math.pow(p2.getY() - p1.getY(), 2));
