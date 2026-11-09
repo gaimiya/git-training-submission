@@ -20,4 +20,8 @@ public class Circle extends Shape {
 		this.radius = radius;
 	}
 	
+	public void draw() {
+		System.out.println("\"[円を描画]中心点(" + center.getX() + ", " + \")";
+	}
+	
 }
