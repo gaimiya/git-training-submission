@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 
@@ -22,6 +23,10 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
+	/**
+	 * ユーザー情報 全検索
+	 * @return 検索結果
+	 */
 	public List<User> searchAll() {
 		// ユーザーTBLの内容を全検索
 		return userRepository.findAll();
@@ -48,5 +53,18 @@ public class UserService {
 	 */
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
+	}
+	
+	/**
+	 * ユーザー情報 更新
+	 * @param userUpdateRequest ユーザー情報
+	 */
+	public void update(UserUpdateRequest userUpdateRequest) {
+		User user = findById(userUpdateRequest.getId());
+		user.setAddress(userUpdateRequest.getAddress());
+		user.setName(userUpdateRequest.getName());
+		user.setPhone(userUpdateRequest.getPhone());
+		user.setUpdateDate(new Date());
+		userRepository.save(user);
 	}
 }
