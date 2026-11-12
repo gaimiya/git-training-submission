@@ -1,4 +1,7 @@
 @charset "UTF-8";
+body {
+	width: 90%;
+}
 table {
 	width: 90%;
 	border-collapse: collapse;

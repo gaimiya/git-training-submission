@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserMapper;
 import com.example.demo.repository.UserRepository;
 
 /**
@@ -22,6 +24,12 @@ public class UserService {
 	 */
 	@Autowired
 	UserRepository userRepository;
+	
+	/**
+	 * ユーザー情報 Mapper
+	 */
+	@Autowired
+	private UserMapper userMapper;
 	
 	/**
 	 * ユーザー情報 全検索
@@ -66,5 +74,14 @@ public class UserService {
 		user.setPhone(userUpdateRequest.getPhone());
 		user.setUpdateDate(new Date());
 		userRepository.save(user);
+	}
+	
+	/**
+	 * ユーザー情報検索
+	 * @param userSearchRequest リクエストデータ
+	 * @return
+	 */
+	public User search(UserSearchRequest userSearchRequest) {
+		return userMapper.search(userSearchRequest);
 	}
 }
