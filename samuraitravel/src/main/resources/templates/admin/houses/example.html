@@ -1,163 +1,407 @@
-1 <!DOCTYPE html>
+<!DOCTYPE ht<ml>
 
 
-2 <html xmlns:th="https://www.thymeleaf.org">
+2 <html xmlns:th=" https://www.thymeleaf.org">
 
 
-3     <head>
+								3
 
+								<head>
 
-4         <!-- meta要素の部品化 -->
 
+									4 <div th:replace="~{fragment :: meta}"></div>
 
-5         <div th:fragment="meta" th:remove="tag">
 
+									5
 
-6             <meta charset="UTF-8">
 
+									6 <div th:replace="~{fragment :: styles}"></div>
 
-7             <meta name="viewport" content="width=device-width, initial-scale=1">
 
+									7
 
-8         </div>                        
 
+									8 <title>民宿登録</title>
 
-9         
 
+									9 </head>
 
-10         <!-- link要素の部品化 -->
 
+								10
 
-11         <div th:fragment="styles" th:remove="tag">
+								<body>
 
 
-12             <!-- Bootstrap -->
+									11 <div class="moattravel-wrapper">
 
 
-13             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+										12 <!-- ヘッダー -->
 
 
-14             
+										t fw-bold">宿泊料金（単位：円）
+							</label>
 
 
-15             <!-- Google Fonts -->
+div th:replace="~{fragment :: header}"></div>
 
 
-16             <link rel="preconnect" href="https://fonts.googleapis.com">
+14
 
 
-17             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+15 <main>
 
 
-18             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+	16 <div class="container pt-4 pb-5 moattravel-container">
 
 
-19             
+		17 <div class="row justify-content-center">
 
 
-20             <link th:href="@{/css/style.css}" rel="stylesheet" >
+			18 <div class="col-xl-5 col-lg-6 col-md-8">
 
 
-21         </div>   
+				19 <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 
 
-22         
+					20 <ol class="breadcrumb mb-0">
 
 
-23         <title>部品化用のHTMLファイル</title>     
+						21 <li class="breadcrumb-item"><a th:href="@{/admin/houses}">民宿一覧</a></li>
 
 
-24     </head>
+						22 <li class="breadcrumb-item active" aria-current="page">民宿登録</li>
 
 
-25     <body>
+						23 </ol>
 
 
-26         <!-- ヘッダーの部品化 -->
+					24 </nav>
 
 
-27         <div th:fragment="header" th:remove="tag">
+				25
 
 
-28             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm moattravel-navbar">
+				26 <h1 class="mb-4 text-center">民宿登録</h1>
 
 
-29                 <div class="container moattravel-container">
+				27
 
 
-30                     <a class="navbar-brand" th:href="@{/}">                        
+				28 <form method="post" th:action="@{/admin/houses/create}" th:object="${houseRegisterForm}"
+					enctype="multipart/form-data">
 
 
-31                         <img class="moattravel-logo me-1" th:src="@{/images/logo.png}" alt="moat Travel">                        
+					29 <div class="form-group row mb-3">
 
 
-32                     </a>                                                                    
+						30 <div class="col-md-4">
 
 
-33                 </div>
+							31 <label for="name" class="col-form-label text-md-left fw-bold">民宿名</label>
 
 
-34             </nav>
+							32 </div>
 
 
-35         </div>
+						33 <div class="col-md-8">
 
 
-36         
+							34 <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2"
+								th:errors="*{name}"></div>
 
 
-37         
+							35 <input type="text" class="form-control" th:field="*{name}" autofocus>
 
 
-38         <!-- フッターの部品化 -->
+							36 </div>
 
 
-39         <div th:fragment="footer" th:remove="tag">
+						37 </div>
 
 
-40             <footer>
+					38
 
 
-41                 <div class="d-flex justify-content-center align-items-center h-100">
+					39 <div class="form-group row mb-3">
 
 
-42                     <p class="text-center text-muted small mb-0">&copy; moat Travel All rights reserved.</p>      
+						40 <div class="col-md-4">
 
 
-43                 </div>                 
+							41 <label for="imageFile" class="col-form-label text-md-left fw-bold">民宿画像</label>
 
 
-44             </footer>
+							42 </div>
 
 
-45         </div>
+						43 <div class="col-md-8">
 
 
-46     
+							44 <div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2"
+								th:errors="*{imageFile}"></div>
 
 
-47         <!-- script要素の部品化 -->
+							45 <input type="file" class="form-control" th:field="*{imageFile}">
 
 
-48         <div th:fragment="scripts" th:remove="tag">
+							46 </div>
 
 
-49             <!-- Bootstrap -->
+						47 </div>
 
 
-50             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+					48
 
 
-51         </div>
+					49 <!-- 選択された画像の表示場所 -->
 
 
-52     </body>
+					50 <div class="row" id="imagePreview"></div>
 
 
-53 </html>
+					51
 
 
-54
+					52 <div class="form-group row mb-3">
 
 
-Copy
+						53 <div class="col-md-4">
+
+
+							54 <label for="description" class="col-form-label text-md-left fw-bold">説明</label>
+
+
+							55 </div>
+
+
+						56 <div class="col-md-8">
+
+
+							57 <div th:if="${#fields.hasErrors('description')}" class="text-danger small mb-2"
+								th:errors="*{description}"></div>
+
+
+							58 <textarea class="form-control" th:field="*{description}" cols="30" rows="5"></textarea>
+
+
+							59 </div>
+
+
+						60 </div>
+
+
+					61
+
+
+					62 <div class="form-group row mb-3">
+
+
+						63 <div class="col-md-4">
+
+
+							64 <label for="price" class="col-form-label text-md-lef1 
+
+							65 </div>
+
+
+						66 <div class="col-md-8">
+
+
+							67 <div th:if="${#fields.hasErrors('price')}" class="text-danger small mb-2"
+								th:errors="*{price}"></div>
+
+
+							68 <input type="number" class="form-control" th:field="*{price}">
+
+
+							69 </div>
+
+
+						70 </div>
+
+
+					71
+
+
+					72 <div class="form-group row mb-3">
+
+
+						73 <div class="col-md-4">
+
+
+							74 <label for="capacity" class="col-form-label text-md-left fw-bold">定員（単位：人）</label>
+
+
+							75 </div>
+
+
+						76 <div class="col-md-8">
+
+
+							77 <div th:if="${#fields.hasErrors('capacity')}" class="text-danger small mb-2"
+								th:errors="*{capacity}"></div>
+
+
+							78 <input type="number" class="form-control" th:field="*{capacity}">
+
+
+							79 </div>
+
+
+						80 </div>
+
+
+					81
+
+
+					82 <div class="form-group row mb-3">
+
+
+						83 <div class="col-md-4">
+
+
+							84 <label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
+
+
+							85 </div>
+
+
+						86 <div class="col-md-8">
+
+
+							87 <div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2"
+								th:errors="*{postalCode}"></div>
+
+
+							88 <input type="text" class="form-control" th:field="*{postalCode}">
+
+
+							89 </div>
+
+
+						90 </div>
+
+
+					91
+
+
+					92 <div class="form-group row mb-3">
+
+
+						93 <div class="col-md-4">
+
+
+							94 <label for="address" class="col-form-label text-md-left fw-bold">住所</label>
+
+
+							95 </div>
+
+
+						96 <div class="col-md-8">
+
+
+							97 <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2"
+								th:errors="*{address}"></div>
+
+
+							98 <input type="text" class="form-control" th:field="*{address}">
+
+
+							99 </div>
+
+
+						100 </div>
+
+
+					101
+
+
+					102 <div class="form-group row mb-3">
+
+
+						103 <div class="col-md-4">
+
+
+							104 <label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号</label>
+
+
+							105 </div>
+
+
+						106 <div class="col-md-8">
+
+
+							107 <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2"
+								th:errors="*{phoneNumber}"></div>
+
+
+							108 <input type="text" class="form-control" th:field="*{phoneNumber}">
+
+
+							109 </div>
+
+
+						110 </div>
+
+
+					111
+
+
+					112
+
+
+					113 <div class="form-group d-flex justify-content-center my-4">
+
+
+						114 <button type="submit" class="btn text-white shadow-sm w-50 moattravel-btn">登録</button>
+
+
+						115 </div>
+
+
+					116 </form>
+
+
+				117 </div>
+
+
+			118 </div>
+
+
+		119 </div>
+
+
+	120 </main>
+
+
+121
+
+
+122 <!-- フッター -->
+
+
+123 <div th:replace="~{fragment :: footer}"></div>
+
+
+124 </div>
+
+
+125
+
+
+126 <div th:replace="~{fragment :: scripts}"></div>
+
+
+127
+<script th:src="@{/js/preview.js}"></script>
+
+
+128 </body>
+
+
+129
+
+</html>
+
+
+130
