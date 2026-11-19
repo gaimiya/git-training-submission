@@ -1,127 +1,403 @@
-1package com.example.moattravel.form;
+1 <!DOCTYPE html>
 
 
-2
+2 <html xmlns:th="https://www.thymeleaf.org">
 
 
-3 import org.springframework.web.multipart.MultipartFile;
+3     <head>
 
 
-4 
+4         <div th:replace="~{fragment :: meta}"></div>   
 
 
-5 import jakarta.validation.constraints.Min;
+5              
 
 
-6 import jakarta.validation.constraints.NotBlank;
+6         <div th:replace="~{fragment :: styles}"></div>
 
 
-7 import jakarta.validation.constraints.NotNull;
+7         
 
 
-8 import lombok.AllArgsConstructor;
+8         <title>民宿情報編集</title>       
 
 
-9 import lombok.Data;
+9     </head>
 
 
-10 
+10     <body>
 
 
-11 @Data
+11         <div class="moattravel-wrapper">
 
 
-12 @AllArgsConstructor
+12             <!-- ヘッダー -->
 
 
-13public class HouseEditForm {
+13             <div th:replace="~{fragment :: header}"></div>
 
 
-14     @NotNull
+14             
 
 
-15     private Integer id;    
+15             <main>
 
 
-16     
+16                 <div class="container pt-4 pb-5 moattravel-container">
 
 
-17     @NotBlank(message = "民宿名を入力してください。")
+17                     <div class="row justify-content-center">
 
 
-18     private String name;
+18                         <div class="col-xl-5 col-lg-6 col-md-8">
 
 
-19         
+19                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 
 
-20     private MultipartFile imageFile;
+20                                 <ol class="breadcrumb mb-0"> 
 
 
-21     
+21                                     <li class="breadcrumb-item"><a th:href="@{/admin/houses}">民宿一覧</a></li>  
 
 
-22     @NotBlank(message = "説明を入力してください。")
+22                                     <li class="breadcrumb-item"><a th:href="@{/admin/houses/__${houseEditForm.getId()}__}">民宿詳細</a></li>                                                           
 
 
-23     private String description;   
+23                                     <li class="breadcrumb-item active" aria-current="page">民宿情報編集</li>
 
 
-24     
+24                                 </ol>
 
 
-25     @NotNull(message = "宿泊料金を入力してください。")
+25                             </nav> 
 
 
-26     @Min(value = 1, message = "宿泊料金は1円以上に設定してください。")
+26                             
 
 
-27     private Integer price; 
+27                             <h1 class="mb-4 text-center">民宿情報編集</h1>         
 
 
-28     
+28                             
 
 
-29     @NotNull(message = "定員を入力してください。")
+29                             <form method="post" th:action="@{/admin/houses/__${houseEditForm.getId()}__/update}" th:object="${houseEditForm}" enctype="multipart/form-data">   
 
 
-30     @Min(value = 1, message = "定員は1人以上に設定してください。")
+30                                 <input type="hidden" th:field="*{id}">
 
 
-31     private Integer capacity;       
+31                                                                                          
 
 
-32     
+32                                 <div class="form-group row mb-3">
 
 
-33     @NotBlank(message = "郵便番号を入力してください。")
+33                                     <div class="col-md-4">
 
 
-34     private String postalCode;
+34                                         <label for="name" class="col-form-label text-md-left fw-bold">民宿名</label>
 
 
-35     
+35                                     </div>
 
 
-36     @NotBlank(message = "住所を入力してください。")
+36                                     <div class="col-md-8">                                    
 
 
-37     private String address;
+37                                         <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>                                    
 
 
-38     
+38                                         <input type="text" class="form-control" th:field="*{name}" autofocus>
 
 
-39     @NotBlank(message = "電話番号を入力してください。")
+39                                     </div>
 
 
-40     private String phoneNumber;
+40                                 </div>
 
 
-41}
+41                                 
 
 
-42
+42                                 <div class="form-group row mb-3">
+
+
+43                                     <div class="col-md-4">
+
+
+44                                         <label for="imageFile" class="col-form-label text-md-left fw-bold">民宿画像</label>
+
+
+45                                     </div>                                    
+
+
+46                                     <div class="col-md-8">
+
+
+47                                         <div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2" th:errors="*{imageFile}"></div>  
+
+
+48                                         <input type="file" class="form-control" th:field="*{imageFile}">
+
+
+49                                     </div>
+
+
+50                                 </div>   
+
+
+51                                 
+
+
+52                                 <!-- 選択された画像の表示場所 -->
+
+
+53                                 <div th:if="${imageName}" class="row" id="imagePreview"><img th:src="@{/storage/__${imageName}__}" class="mb-3"></div>
+
+
+54                                 <div th:unless="${imageName}" class="row" id="imagePreview"></div>                                 
+
+
+55                                 
+
+
+56                                 <div class="form-group row mb-3">
+
+
+57                                     <div class="col-md-4">
+
+
+58                                         <label for="description" class="col-form-label text-md-left fw-bold">説明</label>
+
+
+59                                     </div>
+
+
+60                                     <div class="col-md-8">                            
+
+
+61                                         <div th:if="${#fields.hasErrors('description')}" class="text-danger small mb-2" th:errors="*{description}"></div>                                        
+
+
+62                                         <textarea class="form-control" th:field="*{description}" cols="30" rows="5"></textarea>
+
+
+63                                     </div>
+
+
+64                                 </div>
+
+
+65                                 
+
+
+66                                 <div class="form-group row mb-3">
+
+
+67                                     <div class="col-md-4">
+
+
+68                                         <label for="price" class="col-form-label text-md-left fw-bold">宿泊料金（単位：円）</label>
+
+
+69                                     </div> 
+
+
+70                                     <div class="col-md-8">
+
+
+71                                         <div th:if="${#fields.hasErrors('price')}" class="text-danger small mb-2" th:errors="*{price}"></div>
+
+
+72                                         <input type="number" class="form-control" th:field="*{price}">                                
+
+
+73                                     </div>                                    
+
+
+74                                 </div> 
+
+
+75                                 
+
+
+76                                 <div class="form-group row mb-3">
+
+
+77                                     <div class="col-md-4">
+
+
+78                                         <label for="capacity" class="col-form-label text-md-left fw-bold">定員（単位：人）</label>
+
+
+79                                     </div> 
+
+
+80                                     <div class="col-md-8">
+
+
+81                                         <div th:if="${#fields.hasErrors('capacity')}" class="text-danger small mb-2" th:errors="*{capacity}"></div>
+
+
+82                                         <input type="number" class="form-control" th:field="*{capacity}">                                
+
+
+83                                     </div>                                    
+
+
+84                                 </div>                                                                
+
+
+85                                                                                                                         
+
+
+86                                 <div class="form-group row mb-3">
+
+
+87                                     <div class="col-md-4">
+
+
+88                                         <label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
+
+
+89                                     </div>
+
+
+90                                     <div class="col-md-8">
+
+
+91                                         <div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2" th:errors="*{postalCode}"></div>
+
+
+92                                         <input type="text" class="form-control" th:field="*{postalCode}">
+
+
+93                                     </div>
+
+
+94                                 </div>
+
+
+95                                                                                                               
+
+
+96                                 <div class="form-group row mb-3">
+
+
+97                                     <div class="col-md-4">
+
+
+98                                         <label for="address" class="col-form-label text-md-left fw-bold">住所</label>
+
+
+99                                     </div>
+
+
+100                                     <div class="col-md-8">
+
+
+101                                         <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2" th:errors="*{address}"></div>
+
+
+102                                         <input type="text" class="form-control" th:field="*{address}">  
+
+
+103                                     </div>
+
+
+104                                 </div>                                                                                
+
+
+105                                 
+
+
+106                                 <div class="form-group row mb-3">
+
+
+107                                     <div class="col-md-4">
+
+
+108                                         <label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号</label>
+
+
+109                                     </div>
+
+
+110                                     <div class="col-md-8">
+
+
+111                                         <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2" th:errors="*{phoneNumber}"></div>
+
+
+112                                         <input type="text" class="form-control" th:field="*{phoneNumber}">                                
+
+
+113                                     </div>
+
+
+114                                 </div>
+
+
+115                                                                                                                         
+
+
+116                                 
+
+
+117                                 <div class="form-group d-flex justify-content-center my-4">
+
+
+118                                     <button type="submit" class="btn text-white shadow-sm w-50 moattravel-btn">更新</button>
+
+
+119                                 </div>
+
+
+120                             </form>                                                                         
+
+
+121                         </div>
+
+
+122                     </div>
+
+
+123                 </div>                 
+
+
+124             </main>
+
+
+125             
+
+
+126             <!-- フッター -->
+
+
+127             <div th:replace="~{fragment :: footer}"></div>
+
+
+128         </div>    
+
+
+129         
+
+
+130         <div th:replace="~{fragment :: scripts}"></div>  
+
+
+131         <script th:src="@{/js/preview.js}"></script>     
+
+
+132     </body>
+
+
+133 </html>
+
+
+134
 
 
 Copy
