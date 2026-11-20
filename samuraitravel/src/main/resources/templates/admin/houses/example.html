@@ -1,403 +1,329 @@
-1 <!DOCTYPE html>
+1/*======== 前略 ========*/
+
+
+2
+
+
+3.moattravel-link-danger {
+
+
+4    color: #f2594b;
+
+
+5}
+
+
+6
+
+
+7.moattravel-link-danger:hover {
+
+
+8    color: #a63c3c;
+
+
+9}
+
+
+10
+
+
+11.moattravel-btn-danger {
+
+
+12    background-color: #f2594b !important;
+
+
+13    transition: 0.1s;
+
+
+14}
+
+
+15
+
+
+16.moattravel-btn-danger:hover {
+
+
+17  opacity: 0.8;   
+
+
+18}
+
+
+19
+
+
+20 .moattravel-dropdown-item:active {
+
+
+21   background-color: #5196a6;
+
+
+22 }
+
+
+23
+
+
+24@media screen and (min-width: 1400px) {
+
+
+25  .moattravel-container {
+
+
+26    max-width: 1200px;
+
+
+27  }
+
+
+28}
+
+
+29
+
+
+Copy
+
+
+
+1<!DOCTYPE html>
 
 
 2 <html xmlns:th="https://www.thymeleaf.org">
 
 
-3     <head>
+3 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
-4         <div th:replace="~{fragment :: meta}"></div>   
+4<!--======== 中略 ========-->
 
 
-5              
+5
 
 
-6         <div th:replace="~{fragment :: styles}"></div>
+6    <body>
 
 
-7         
+7        <!-- ヘッダーの部品化 -->
 
 
-8         <title>民宿情報編集</title>       
+8        <div th:fragment="header" th:remove="tag">
 
 
-9     </head>
+9            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm moattravel-navbar">
 
 
-10     <body>
+10                <div class="container moattravel-container">
 
 
-11         <div class="moattravel-wrapper">
+11                    <a class="navbar-brand" th:href="@{/}">                        
 
 
-12             <!-- ヘッダー -->
+12                        <img class="moattravel-logo me-1" th:src="@{/images/logo.png}" alt="moat Travel">                        
 
 
-13             <div th:replace="~{fragment :: header}"></div>
+13                    </a>    
 
 
-14             
+14                    
 
 
-15             <main>
+15                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
 
-16                 <div class="container pt-4 pb-5 moattravel-container">
+16                         <span class="navbar-toggler-icon"></span>
 
 
-17                     <div class="row justify-content-center">
+17                     </button>
 
 
-18                         <div class="col-xl-5 col-lg-6 col-md-8">
+18                     
 
 
-19                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+19                     <div class="collapse navbar-collapse" id="navbarSupportedContent">                                    
 
 
-20                                 <ol class="breadcrumb mb-0"> 
+20                         <ul class="navbar-nav ms-auto">    
 
 
-21                                     <li class="breadcrumb-item"><a th:href="@{/admin/houses}">民宿一覧</a></li>  
+21                             <!-- 未ログインであれば表示する -->
 
 
-22                                     <li class="breadcrumb-item"><a th:href="@{/admin/houses/__${houseEditForm.getId()}__}">民宿詳細</a></li>                                                           
+22                             <li class="nav-item" sec:authorize="isAnonymous()">
 
 
-23                                     <li class="breadcrumb-item active" aria-current="page">民宿情報編集</li>
+23                                 <a class="nav-link" th:href="@{/login}">ログイン</a>
 
 
-24                                 </ol>
+24                             </li>                                                      
 
 
-25                             </nav> 
+25                     
 
 
-26                             
+26                             <!-- ログイン済みであれば表示する --> 
 
 
-27                             <h1 class="mb-4 text-center">民宿情報編集</h1>         
+27                             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')">
 
 
-28                             
+28                                 <a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 
 
-29                             <form method="post" th:action="@{/admin/houses/__${houseEditForm.getId()}__/update}" th:object="${houseEditForm}" enctype="multipart/form-data">   
+29                                     <span sec:authentication="principal.user.name"></span>
 
 
-30                                 <input type="hidden" th:field="*{id}">
+30                                 </a>
 
 
-31                                                                                          
+31         
 
 
-32                                 <div class="form-group row mb-3">
+32                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">                                                                  
 
 
-33                                     <div class="col-md-4">
+33                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 
 
-34                                         <label for="name" class="col-form-label text-md-left fw-bold">民宿名</label>
+34                                         ログアウト
 
 
-35                                     </div>
+35                                     </a>
 
 
-36                                     <div class="col-md-8">                                    
+36                                     <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
 
 
-37                                         <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>                                    
+37                                 </div>
 
 
-38                                         <input type="text" class="form-control" th:field="*{name}" autofocus>
+38                             </li>                       
 
 
-39                                     </div>
+39                                 
 
 
-40                                 </div>
+40                             <!-- 管理者であれば表示する -->    
 
 
-41                                 
+41                             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 
 
-42                                 <div class="form-group row mb-3">
+42                                 <a id="navbarDropdownAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 
 
-43                                     <div class="col-md-4">
+43                                     管理者メニュー
 
 
-44                                         <label for="imageFile" class="col-form-label text-md-left fw-bold">民宿画像</label>
+44                                 </a>
 
 
-45                                     </div>                                    
+45         
 
 
-46                                     <div class="col-md-8">
+46                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">                                                                                            
 
 
-47                                         <div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2" th:errors="*{imageFile}"></div>  
+47                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/admin/houses}">民宿一覧</a>                                                                                                     
 
 
-48                                         <input type="file" class="form-control" th:field="*{imageFile}">
+48                                                               
 
 
-49                                     </div>
+49                                     <div class="dropdown-divider"></div>
 
 
-50                                 </div>   
+50                                     
 
 
-51                                 
+51                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 
 
-52                                 <!-- 選択された画像の表示場所 -->
+52                                         ログアウト
 
 
-53                                 <div th:if="${imageName}" class="row" id="imagePreview"><img th:src="@{/storage/__${imageName}__}" class="mb-3"></div>
+53                                     </a>
 
 
-54                                 <div th:unless="${imageName}" class="row" id="imagePreview"></div>                                 
+54                                     <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form> 
 
 
-55                                 
+55                                 </div>
 
 
-56                                 <div class="form-group row mb-3">
+56                             </li>                           
 
 
-57                                     <div class="col-md-4">
+57                         </ul>       
 
 
-58                                         <label for="description" class="col-form-label text-md-left fw-bold">説明</label>
+58                    </div>                                                                                    
 
 
-59                                     </div>
+59                </div>
 
 
-60                                     <div class="col-md-8">                            
+60            </nav>
 
 
-61                                         <div th:if="${#fields.hasErrors('description')}" class="text-danger small mb-2" th:errors="*{description}"></div>                                        
+61        </div>
 
 
-62                                         <textarea class="form-control" th:field="*{description}" cols="30" rows="5"></textarea>
+62        
 
 
-63                                     </div>
+63        <!-- フッターの部品化 -->
 
 
-64                                 </div>
+64        <div th:fragment="footer" th:remove="tag">
 
 
-65                                 
+65            <footer>
 
 
-66                                 <div class="form-group row mb-3">
+66                <div class="d-flex justify-content-center align-items-center h-100">
 
 
-67                                     <div class="col-md-4">
+67                    <p class="text-center text-muted small mb-0">&copy; moat Travel All rights reserved.</p>      
 
 
-68                                         <label for="price" class="col-form-label text-md-left fw-bold">宿泊料金（単位：円）</label>
+68                </div>                 
 
 
-69                                     </div> 
+69            </footer>
 
 
-70                                     <div class="col-md-8">
+70        </div>
 
 
-71                                         <div th:if="${#fields.hasErrors('price')}" class="text-danger small mb-2" th:errors="*{price}"></div>
+71    
 
 
-72                                         <input type="number" class="form-control" th:field="*{price}">                                
+72        <!-- script要素の部品化 -->
 
 
-73                                     </div>                                    
+73        <div th:fragment="scripts" th:remove="tag">
 
 
-74                                 </div> 
+74            <!-- Bootstrap -->
 
 
-75                                 
+75            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 
-76                                 <div class="form-group row mb-3">
+76        </div>
 
 
-77                                     <div class="col-md-4">
+77    </body>
 
 
-78                                         <label for="capacity" class="col-form-label text-md-left fw-bold">定員（単位：人）</label>
+78</html>
 
 
-79                                     </div> 
-
-
-80                                     <div class="col-md-8">
-
-
-81                                         <div th:if="${#fields.hasErrors('capacity')}" class="text-danger small mb-2" th:errors="*{capacity}"></div>
-
-
-82                                         <input type="number" class="form-control" th:field="*{capacity}">                                
-
-
-83                                     </div>                                    
-
-
-84                                 </div>                                                                
-
-
-85                                                                                                                         
-
-
-86                                 <div class="form-group row mb-3">
-
-
-87                                     <div class="col-md-4">
-
-
-88                                         <label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
-
-
-89                                     </div>
-
-
-90                                     <div class="col-md-8">
-
-
-91                                         <div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2" th:errors="*{postalCode}"></div>
-
-
-92                                         <input type="text" class="form-control" th:field="*{postalCode}">
-
-
-93                                     </div>
-
-
-94                                 </div>
-
-
-95                                                                                                               
-
-
-96                                 <div class="form-group row mb-3">
-
-
-97                                     <div class="col-md-4">
-
-
-98                                         <label for="address" class="col-form-label text-md-left fw-bold">住所</label>
-
-
-99                                     </div>
-
-
-100                                     <div class="col-md-8">
-
-
-101                                         <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2" th:errors="*{address}"></div>
-
-
-102                                         <input type="text" class="form-control" th:field="*{address}">  
-
-
-103                                     </div>
-
-
-104                                 </div>                                                                                
-
-
-105                                 
-
-
-106                                 <div class="form-group row mb-3">
-
-
-107                                     <div class="col-md-4">
-
-
-108                                         <label for="phoneNumber" class="col-form-label text-md-left fw-bold">電話番号</label>
-
-
-109                                     </div>
-
-
-110                                     <div class="col-md-8">
-
-
-111                                         <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2" th:errors="*{phoneNumber}"></div>
-
-
-112                                         <input type="text" class="form-control" th:field="*{phoneNumber}">                                
-
-
-113                                     </div>
-
-
-114                                 </div>
-
-
-115                                                                                                                         
-
-
-116                                 
-
-
-117                                 <div class="form-group d-flex justify-content-center my-4">
-
-
-118                                     <button type="submit" class="btn text-white shadow-sm w-50 moattravel-btn">更新</button>
-
-
-119                                 </div>
-
-
-120                             </form>                                                                         
-
-
-121                         </div>
-
-
-122                     </div>
-
-
-123                 </div>                 
-
-
-124             </main>
-
-
-125             
-
-
-126             <!-- フッター -->
-
-
-127             <div th:replace="~{fragment :: footer}"></div>
-
-
-128         </div>    
-
-
-129         
-
-
-130         <div th:replace="~{fragment :: scripts}"></div>  
-
-
-131         <script th:src="@{/js/preview.js}"></script>     
-
-
-132     </body>
-
-
-133 </html>
-
-
-134
+79
 
 
 Copy
