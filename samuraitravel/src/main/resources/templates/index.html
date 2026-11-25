@@ -50,15 +50,25 @@
 								<img th:unless="${newHouse.getImageName()}" th:src="@{/images/noImage.png}"
 									class="card-img-top samuraitravel-vertical-card-image" alt="NO IMAGE">
 								<h3 class="card-title" th:text="${newHouse.getName()}"></h3>
-									<p class="card-text mb-1">
-										<small class="text-muted" th:text="${newHouse.getAddress()}"></small>
-									</p>
-									<p class="card-text">
-										<span th:text="${#numbers.formatInteger(newHouse.getPrice(), 1, 'COMMA') + '円/泊'}"></span>
-									</p>
+								<p class="card-text mb-1">
+									<small class="text-muted" th:text="${newHouse.getAddress()}"></small>
+								</p>
+								<p class="card-text">
+									<span
+										th:text="${#numbers.formatInteger(newHouse.getPrice(), 1, 'COMMA') + '円/泊'}"></span>
+								</p>
 							</div>
 					</div>
 					</a>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-xl-5 col-lg-6 col-md-8">
+					<h2 class="text-center mb-3">エリアから探す</h2>
+					
+					<table class="table">
+						ここまでやった！！！！！！！！！！１
+					</table>
 				</div>
 			</div>
 	</div>
