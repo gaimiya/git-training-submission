@@ -32,6 +32,6 @@ public class VerificationToken {
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;
 	
-	@Column(name = "cupdated_at", insertable = false, updatable = false)
+	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
 }
