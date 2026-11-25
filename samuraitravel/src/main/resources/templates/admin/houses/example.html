@@ -1,329 +1,678 @@
-1/*======== 前略 ========*/
+1
+<!DOCTYPE html>
 
 
-2
+2 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
-3.moattravel-link-danger {
+3
+
+<head>
 
 
-4    color: #f2594b;
+	4 <div th:replace="~{fragment :: meta}"></div>
 
 
-5}
+	5
 
 
-6
+	6 <div th:replace="~{fragment :: styles}"></div>
 
 
-7.moattravel-link-danger:hover {
+	7
 
 
-8    color: #a63c3c;
+	8 <title>民宿一覧</title>
 
 
-9}
+	9 </head>
 
 
 10
 
+<body>
 
-11.moattravel-btn-danger {
 
+	11 <div class="moattravel-wrapper">
 
-12    background-color: #f2594b !important;
 
+		12 <!-- ヘッダー -->
 
-13    transition: 0.1s;
 
+		13 <div th:replace="~{fragment :: header}"></div>
 
-14}
 
+		14
 
-15
 
+		15 <main>
 
-16.moattravel-btn-danger:hover {
 
+			16 <div class="container moattravel-container pb-5">
 
-17  opacity: 0.8;   
 
+				17 <div class="row justify-content-center">
 
-18}
 
+					18 <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 
-19
 
+						19 <ol class="breadcrumb mb-0">
 
-20 .moattravel-dropdown-item:active {
 
+							20 <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
 
-21   background-color: #5196a6;
 
+							21 <li class="breadcrumb-item active" aria-current="page">民宿一覧</li>
 
-22 }
 
+							22 </ol>
 
-23
 
+						23 </nav>
 
-24@media screen and (min-width: 1400px) {
 
+					24
 
-25  .moattravel-container {
 
+					25 <div class="col-xl-3 col-lg-4 col-md-12">
 
-26    max-width: 1200px;
 
+						26 <form method="get" th:action="@{/houses}" class="w-100 mb-3">
 
-27  }
 
+							27 <div class="input-group">
 
-28}
 
+								28 <input type="text" class="form-control" name="keyword" th:value="${keyword}"
+									placeholder="民宿名・目的地">
 
-29
 
+								29 <button type="submit" class="btn text-white shadow-sm moattravel-btn">検索</button>
 
-Copy
 
+								30 </div>
 
 
-1<!DOCTYPE html>
+							31 </form>
 
 
-2 <html xmlns:th="https://www.thymeleaf.org">
+						32
 
 
-3 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+						33 <div class="card mb-3">
 
 
-4<!--======== 中略 ========-->
+							34 <div class="card-header">
 
 
-5
+								35 エリアから探す
 
 
-6    <body>
+								36 </div>
 
 
-7        <!-- ヘッダーの部品化 -->
+							37 <div class="card-body">
 
 
-8        <div th:fragment="header" th:remove="tag">
+								38 <form method="get" th:action="@{/houses}" class="w-100">
 
 
-9            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm moattravel-navbar">
+									39 <div class="form-group mb-3">
 
 
-10                <div class="container moattravel-container">
+										40 <select class="form-control form-select" name="area">
 
 
-11                    <a class="navbar-brand" th:href="@{/}">                        
+											41 <option value="" hidden>選択してください</option>
 
 
-12                        <img class="moattravel-logo me-1" th:src="@{/images/logo.png}" alt="moat Travel">                        
+											42 <optgroup label="北海道">
 
 
-13                    </a>    
+												43 <option value="北海道" th:selected="${area == '北海道'}">北海道</option>
 
 
-14                    
+												44 </optgroup>
 
 
-15                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+											45 <optgroup label="東北">
 
 
-16                         <span class="navbar-toggler-icon"></span>
+												46 <option value="青森県" th:selected="${area == '青森県'}">青森県</option>
 
 
-17                     </button>
+												47 <option value="岩手県" th:selected="${area == '岩手県'}">岩手県</option>
 
 
-18                     
+												48 <option value="宮城県" th:selected="${area == '宮城県'}">宮城県</option>
 
 
-19                     <div class="collapse navbar-collapse" id="navbarSupportedContent">                                    
+												49 <option value="秋田県" th:selected="${area == '秋田県'}">秋田県</option>
 
 
-20                         <ul class="navbar-nav ms-auto">    
+												50 <option value="山形県" th:selected="${area == '山形県'}">山形県</option>
 
 
-21                             <!-- 未ログインであれば表示する -->
+												51 <option value="福島県" th:selected="${area == '福島県'}">福島県</option>
 
 
-22                             <li class="nav-item" sec:authorize="isAnonymous()">
+												52 </optgroup>
 
 
-23                                 <a class="nav-link" th:href="@{/login}">ログイン</a>
+											53 <optgroup label="北関東">
 
 
-24                             </li>                                                      
+												54 <option value="茨城県" th:selected="${area == '茨城県'}">茨城県</option>
 
 
-25                     
+												55 <option value="栃木県" th:selected="${area == '栃木県'}">栃木県</option>
 
 
-26                             <!-- ログイン済みであれば表示する --> 
+												56 <option value="群馬県" th:selected="${area == '群馬県'}">群馬県</option>
 
 
-27                             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')">
+												57 </optgroup>
 
 
-28                                 <a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+											58 <optgroup label="首都圏">
 
 
-29                                     <span sec:authentication="principal.user.name"></span>
+												59 <option value="埼玉県" th:selected="${area == '埼玉県'}">埼玉県</option>
 
 
-30                                 </a>
+												60 <option value="千葉県" th:selected="${area == '千葉県'}">千葉県</option>
 
 
-31         
+												61 <option value="東京都" th:selected="${area == '東京都'}">東京都</option>
 
 
-32                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">                                                                  
+												62 <option value="神奈川県" th:selected="${area == '神奈川県'}">神奈川県</option>
 
 
-33                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+												63 </optgroup>
 
 
-34                                         ログアウト
+											64 <optgroup label="甲信越">
 
 
-35                                     </a>
+												65 <option value="新潟県" th:selected="${area == '新潟県'}">新潟県</option>
 
 
-36                                     <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
+												66 <option value="山梨県" th:selected="${area == '山梨県'}">山梨県</option>
 
 
-37                                 </div>
+												67 <option value="長野県" th:selected="${area == '長野県'}">長野県</option>
 
 
-38                             </li>                       
+												68 </optgroup>
 
 
-39                                 
+											69 <optgroup label="北陸">
 
 
-40                             <!-- 管理者であれば表示する -->    
+												70 <option value="富山県" th:selected="${area == '富山県'}">富山県</option>
 
 
-41                             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+												71 <option value="石川県" th:selected="${area == '石川県'}">石川県</option>
 
 
-42                                 <a id="navbarDropdownAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+												72 <option value="福井県" th:selected="${area == '福井県'}">福井県</option>
 
 
-43                                     管理者メニュー
+												73 </optgroup>
 
 
-44                                 </a>
+											74 <optgroup label="東海">
 
 
-45         
+												75 <option value="岐阜県" th:selected="${area == '岐阜県'}">岐阜県</option>
 
 
-46                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">                                                                                            
+												76 <option value="静岡県" th:selected="${area == '静岡県'}">静岡県</option>
 
 
-47                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/admin/houses}">民宿一覧</a>                                                                                                     
+												77 <option value="愛知県" th:selected="${area == '愛知県'}">愛知県</option>
 
 
-48                                                               
+												78 <option value="三重県" th:selected="${area == '三重県'}">三重県</option>
 
 
-49                                     <div class="dropdown-divider"></div>
+												79 </optgroup>
 
 
-50                                     
+											80 <optgroup label="近畿">
 
 
-51                                     <a class="dropdown-item moattravel-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+												81 <option value="滋賀県" th:selected="${area == '滋賀県'}">滋賀県</option>
 
 
-52                                         ログアウト
+												82 <option value="京都府" th:selected="${area == '京都府'}">京都府</option>
 
 
-53                                     </a>
+												83 <option value="大阪府" th:selected="${area == '大阪府'}">大阪府</option>
 
 
-54                                     <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form> 
+												84 <option value="兵庫県" th:selected="${area == '兵庫県'}">兵庫県</option>
 
 
-55                                 </div>
+												85 <option value="奈良県" th:selected="${area == '奈良県'}">奈良県</option>
 
 
-56                             </li>                           
+												86 <option value="和歌山県" th:selected="${area == '和歌山県'}">和歌山県</option>
 
 
-57                         </ul>       
+												87 </optgroup>
 
 
-58                    </div>                                                                                    
+											88 <optgroup label="山陽・山陰">
 
 
-59                </div>
+												89 <option value="鳥取県" th:selected="${area == '鳥取県'}">鳥取県</option>
 
 
-60            </nav>
+												90 <option value="島根県" th:selected="${area == '島根県'}">島根県</option>
 
 
-61        </div>
+												91 <option value="岡山県" th:selected="${area == '岡山県'}">岡山県</option>
 
 
-62        
+												92 <option value="広島県" th:selected="${area == '広島県'}">広島県</option>
 
 
-63        <!-- フッターの部品化 -->
+												93 <option value="山口県" th:selected="${area == '山口県'}">山口県</option>
 
 
-64        <div th:fragment="footer" th:remove="tag">
+												94 </optgroup>
 
 
-65            <footer>
+											95 <optgroup label="四国">
 
 
-66                <div class="d-flex justify-content-center align-items-center h-100">
+												96 <option value="徳島県" th:selected="${area == '徳島県'}">徳島県</option>
 
 
-67                    <p class="text-center text-muted small mb-0">&copy; moat Travel All rights reserved.</p>      
+												97 <option value="香川県" th:selected="${area == '香川県'}">香川県</option>
 
 
-68                </div>                 
+												98 <option value="愛媛県" th:selected="${area == '愛媛県'}">愛媛県</option>
 
 
-69            </footer>
+												99 <option value="高知県" th:selected="${area == '高知県'}">高知県</option>
 
 
-70        </div>
+												100 </optgroup>
 
 
-71    
+											101 <optgroup label="九州">
 
 
-72        <!-- script要素の部品化 -->
+												102 <option value="福岡県" th:selected="${area == '福岡県'}">福岡県</option>
 
 
-73        <div th:fragment="scripts" th:remove="tag">
+												103 <option value="佐賀県" th:selected="${area == '佐賀県'}">佐賀県</option>
 
 
-74            <!-- Bootstrap -->
+												104 <option value="長崎県" th:selected="${area == '長崎県'}">長崎県</option>
 
 
-75            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+												105 <option value="熊本県" th:selected="${area == '熊本県'}">熊本県</option>
 
 
-76        </div>
+												106 <option value="大分県" th:selected="${area == '大分県'}">大分県</option>
 
 
-77    </body>
+												107 <option value="宮崎県" th:selected="${area == '宮崎県'}">宮崎県</option>
 
 
-78</html>
+												108 <option value="鹿児島県" th:selected="${area == '鹿児島県'}">鹿児島県</option>
 
 
-79
+												109 </optgroup>
+
+
+											110 <optgroup label="沖縄">
+
+
+												111 <option value="沖縄県" th:selected="${area == '沖縄県'}">沖縄県</option>
+
+
+												112 </optgroup>
+
+
+											113 </select>
+
+
+										114 </div>
+
+
+									115 <div class="form-group">
+
+
+										116 <button type="submit"
+											class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
+
+
+										117 </div>
+
+
+									118 </form>
+
+
+								119 </div>
+
+
+							120 </div>
+
+
+						121
+
+
+						122 <div class="card mb-3">
+
+
+							123 <div class="card-header">
+
+
+								124 1泊あたりの予算から探す
+
+
+								125 </div>
+
+
+							126 <div class="card-body">
+
+
+								127 <form method="get" th:action="@{/houses}" class="w-100">
+
+
+									128 <div class="form-group mb-3">
+
+
+										129 <select class="form-control form-select" name="price">
+
+
+											130 <option value="" hidden>選択してください</option>
+
+
+											131 <option value="6000" th:selected="${price == 6000}">6,000円以内</option>
+
+
+											132 <option value="7000" th:selected="${price == 7000}">7,000円以内</option>
+
+
+											133 <option value="8000" th:selected="${price == 8000}">8,000円以内</option>
+
+
+											134 <option value="9000" th:selected="${price == 9000}">9,000円以内</option>
+
+
+											135 <option value="10000" th:selected="${price == 10000}">10,000円以内</option>
+
+
+											136 </select>
+
+
+										137 </div>
+
+
+									138 <div class="form-group">
+
+
+										139 <button type="submit"
+											class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
+
+
+										140 </div>
+
+
+									141 </form>
+
+
+								142 </div>
+
+
+							143 </div>
+
+
+						144 </div>
+
+
+					145
+
+
+					146 <div class="col">
+
+
+						147 <div class="d-flex justify-content-between flex-wrap">
+
+
+							148 <p th:if="${housePage.getTotalPages() > 1}" class="fs-5 mb-3"
+								th:text="${'検索結果：' + housePage.getTotalElements() + '件' + '（' + (housePage.getNumber() + 1) + ' / ' + housePage.getTotalPages() + ' ページ）'}">
+							</p>
+
+
+							149 <p th:unless="${housePage.getTotalPages() > 1}" class="fs-5 mb-3"
+								th:text="${'検索結果：' + housePage.getTotalElements() + '件'}"></p>
+
+
+							150 </div>
+
+
+						151
+
+
+						152 <div class="mb-3" th:each="house : ${housePage}">
+
+
+							153 <a th:href="@{/houses/__${house.getId()}__}" class="link-dark moattravel-card-link">
+
+
+								154 <div class="card h-100">
+
+
+									155 <div class="row g-0">
+
+
+										156 <div class="col-md-4">
+
+
+											157 <img th:if="${house.getImageName()}"
+												th:src="@{/storage/__${house.getImageName()}__}"
+												class="card-img-top moattravel-horizontal-card-image" alt="店舗画像">
+
+
+											158 <img th:unless="${house.getImageName()}" th:src="@{/images/noImage.png}"
+												class="card-img-top moattravel-horizontal-card-image" alt="NO IMAGE">
+
+
+											159 </div>
+
+
+										160 <div class="col-md-8">
+
+
+											161 <div class="card-body">
+
+
+												162 <h3 class="card-title mb-3" th:text="${house.getName()}"></h3>
+
+
+												163
+
+
+												164
+												<hr class="mb-3">
+
+
+												165
+
+
+												166 <p class="card-text mb-2">
+
+
+													167 <span th:text="${house.getDescription()}"></span>
+
+
+													168 </p>
+
+
+												169
+
+
+												170 <p class="card-text mb-2">
+
+
+													171 <small class="text-muted"
+														th:text="${'〒' + house.getPostalCode()}"></small>
+
+
+													172 <small class="text-muted"
+														th:text="${house.getAddress()}"></small>
+
+
+													173 </p>
+
+
+												174
+
+
+												175 <p class="card-text">
+
+
+													176 <span
+														th:text="${#numbers.formatInteger(house.getPrice(), 1, 'COMMA') + '円 / 泊'}"></span>
+
+
+													177 </p>
+
+
+												178
+											</div>
+
+
+											179 </div>
+
+
+										180 </div>
+
+
+									181 </div>
+
+
+								182 </a>
+
+
+							183 </div>
+
+
+						184
+
+
+						185 <!-- ページネーション -->
+
+
+						186 <div th:if="${housePage.getTotalPages() > 1}" class="d-flex justify-content-center">
+
+
+							187 <nav aria-label="民宿一覧ページ">
+
+
+								188 <ul class="pagination">
+
+
+									189 <li class="page-item">
+
+
+										190 <span th:if="${housePage.isFirst()}" class="page-link disabled">前</span>
+
+
+										191 <a th:unless="${housePage.isFirst()}"
+											th:href="@{/houses(page = ${housePage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link moattravel-page-link">前</a>
+
+
+										192 </li>
+
+
+									193 <li th:each="i : ${#numbers.sequence(0, housePage.getTotalPages() - 1)}"
+										class="page-item">
+
+
+										194 <span th:if="${i == housePage.getNumber()}"
+											class="page-link active moattravel-active" th:text="${i + 1}"></span>
+
+
+										195 <a th:unless="${i == housePage.getNumber()}"
+											th:href="@{/houses(page = ${i}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link moattravel-page-link" th:text="${i + 1}"></a>
+
+
+										196 </li>
+
+
+									197 <li class="page-item">
+
+
+										198 <span th:if="${housePage.isLast()}" class="page-link disabled">次</span>
+
+
+										199 <a th:unless="${housePage.isLast()}"
+											th:href="@{/houses(page = ${housePage.getNumber() + 1}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link moattravel-page-link">次</a>
+
+
+										200 </li>
+
+
+									201 </ul>
+
+
+								202 </nav>
+
+
+							203 </div>
+
+
+						204 </div>
+
+
+					205 </div>
+
+
+				206 </div>
+
+
+			207 </main>
+
+
+		208
+
+
+		209 <!-- フッター -->
+
+
+		210 <div th:replace="~{fragment :: footer}"></div>
+
+
+		211 </div>
+
+
+	212
+
+
+	213 <div th:replace="~{fragment :: scripts}"></div>
+
+
+	214 </body>
+
+
+215
+
+</html>
+
+
+216
 
 
 Copy
